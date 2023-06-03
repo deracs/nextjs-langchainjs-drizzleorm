@@ -8,14 +8,12 @@ import { DataTable } from "@/components/ui/data-table/data-table"
 import { UserNav } from "@/components/ui/data-table/user-nav"
 
 import { columns } from "./columns"
-import { generateTasks } from "./data/seed"
 
 export const metadata: Metadata = {
   title: "Tasks",
   description: "A task and issue tracker build using Tanstack Table.",
 }
 
-// Simulate a database read for tasks.
 async function getTasks() {
   const tasks = await db.query.tasks.findMany()
   return z.array(selectTaskSchema).parse(tasks)
@@ -23,7 +21,6 @@ async function getTasks() {
 
 export default async function TaskPage() {
   const tasks = await getTasks()
-  // await generateTasks()
   return (
     <>
       <div className="md:hidden">

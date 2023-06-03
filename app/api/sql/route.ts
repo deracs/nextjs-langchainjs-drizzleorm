@@ -5,7 +5,9 @@ import { OpenAI } from "langchain/llms/openai"
 export async function POST(req: Request) {
   try {
     const { input } = await req.json()
-    const model = new OpenAI({ temperature: 0 })
+    const model = new OpenAI({
+      temperature: 0,
+    })
     const toolkit = new SqlToolkit(db, model)
     const executor = createSqlAgent(model, toolkit)
 
