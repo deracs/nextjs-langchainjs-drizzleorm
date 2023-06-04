@@ -1,5 +1,3 @@
-"use client"
-
 import { BotForm } from "./_components/bot"
 import "./style.css"
 

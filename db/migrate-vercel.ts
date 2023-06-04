@@ -16,4 +16,4 @@ export async function dbMigrate() {
   else await migrateNode(db, { migrationsFolder: "./drizzle" })
 }
 
-// look into using tis
+// look into using this

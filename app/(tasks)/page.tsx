@@ -1,8 +1,6 @@
 import { Metadata } from "next"
 import Image from "next/image"
-import { db } from "@/db"
-import { selectTaskSchema } from "@/db/schema"
-import { z } from "zod"
+import { allTasks } from "@/db/queries"
 
 import { DataTable } from "@/components/ui/data-table/data-table"
 import { UserNav } from "@/components/ui/data-table/user-nav"
@@ -14,13 +12,8 @@ export const metadata: Metadata = {
   description: "A task and issue tracker build using Tanstack Table.",
 }
 
-async function getTasks() {
-  const tasks = await db.query.tasks.findMany()
-  return z.array(selectTaskSchema).parse(tasks)
-}
-
 export default async function TaskPage() {
-  const tasks = await getTasks()
+  const tasks = await allTasks()
   return (
     <>
       <div className="md:hidden">

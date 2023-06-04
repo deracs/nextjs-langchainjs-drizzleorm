@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { Task, insertTaskSchema } from "@/db/schema"
+import { NewTask, Task, insertTaskSchema } from "@/db/schema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
@@ -31,18 +31,16 @@ import {
 import { toast } from "@/components/ui/use-toast"
 import { Icons } from "@/components/icons"
 
-type NewTaskForm = z.infer<typeof insertTaskSchema>
-
 export function UpdateTaskForm({ task }: { task: Task }) {
   const [isSaving, setIsSaving] = useState<boolean>(false)
   const router = useRouter()
-  const form = useForm<NewTaskForm>({
+  const form = useForm<NewTask>({
     resolver: zodResolver(insertTaskSchema),
     defaultValues: task,
     mode: "onChange",
   })
 
-  async function onSubmit(data: NewTaskForm) {
+  async function onSubmit(data: NewTask) {
     setIsSaving(true)
 
     const response = await fetch(`/api/tasks/${task.id}`, {
@@ -127,9 +125,6 @@ export function UpdateTaskForm({ task }: { task: Task }) {
                       ))}
                     </SelectContent>
                   </Select>
-                  {/* <FormDescription>
-                    This is the priority of your task.
-                  </FormDescription> */}
                   <FormMessage />
                 </FormItem>
               )}

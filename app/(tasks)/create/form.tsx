@@ -2,12 +2,12 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { insertTaskSchema } from "@/db/schema"
+import { NewTask, insertTaskSchema } from "@/db/schema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 
-import { labels, priorities, statuses } from "@/config/data"
+import { priorities, statuses } from "@/config/data"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -31,17 +31,15 @@ import {
 import { toast } from "@/components/ui/use-toast"
 import { Icons } from "@/components/icons"
 
-type NewTaskForm = z.infer<typeof insertTaskSchema>
-
 export function CreateTaskForm() {
   const [isSaving, setIsSaving] = useState<boolean>(false)
   const router = useRouter()
-  const form = useForm<NewTaskForm>({
+  const form = useForm<NewTask>({
     resolver: zodResolver(insertTaskSchema),
     mode: "onChange",
   })
 
-  async function onSubmit(data: NewTaskForm) {
+  async function onSubmit(data: NewTask) {
     setIsSaving(true)
 
     const response = await fetch(`/api/tasks`, {

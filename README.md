@@ -12,6 +12,10 @@ Task app built using NextJS, Shadcn UI, DrizzleORM and Langchain JS
 
 `yarn dev` to start the development server.
 
+## Goals
+
+- build a CRUD AI app with Langchain
+
 ## Features
 
 - Next.js 13 App Directory
@@ -29,7 +33,3 @@ Task app built using NextJS, Shadcn UI, DrizzleORM and Langchain JS
 - Tidy up code
 - Add tests
 - Better migration tool
-
-## License
-
-Licensed under the [MIT license](https://github.com/shadcn/ui/blob/main/LICENSE.md).

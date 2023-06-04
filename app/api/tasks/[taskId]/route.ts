@@ -1,4 +1,5 @@
 import { db } from "@/db"
+import { deleteTask, updateTask } from "@/db/mutations"
 import { insertTaskSchema, tasks } from "@/db/schema"
 import { eq } from "drizzle-orm"
 import * as z from "zod"
@@ -9,16 +10,15 @@ const routeContextSchema = z.object({
   }),
 })
 
-export async function DELETE(
-  req: Request,
-  context: z.infer<typeof routeContextSchema>
-) {
+type routeContextType = z.infer<typeof routeContextSchema>
+
+export async function DELETE(req: Request, context: routeContextType) {
   try {
     // Validate the route params.
     const { params } = routeContextSchema.parse(context)
     const taskId = parseInt(params.taskId)
     // Delete the post.
-    await db.delete(tasks).where(eq(tasks.id, taskId)).returning()
+    await deleteTask(taskId)
 
     return new Response(null, { status: 204 })
   } catch (error) {
@@ -30,10 +30,7 @@ export async function DELETE(
   }
 }
 
-export async function PATCH(
-  req: Request,
-  context: z.infer<typeof routeContextSchema>
-) {
+export async function PATCH(req: Request, context: routeContextType) {
   try {
     // Validate route params.
     const { params } = routeContextSchema.parse(context)
@@ -48,11 +45,7 @@ export async function PATCH(
       })
       .parse(json)
 
-    const data = await db
-      .update(tasks)
-      .set(body)
-      .where(eq(tasks.id, taskId))
-      .returning()
+    const data = await updateTask(taskId, body)
 
     return new Response(JSON.stringify(data))
   } catch (error) {

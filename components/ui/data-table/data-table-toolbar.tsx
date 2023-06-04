@@ -5,6 +5,7 @@ import { Table } from "@tanstack/react-table"
 import { Edit, X } from "lucide-react"
 
 import { priorities, statuses } from "@/config/data"
+import { siteConfig } from "@/config/site"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
@@ -62,7 +63,7 @@ export function DataTableToolbar<TData>({
         variant="outline"
         size="sm"
         className="ml-auto hidden h-8 lg:flex"
-        onClick={() => router.push("/tasks/create")}
+        onClick={() => router.push(siteConfig.links.tasks.create)}
       >
         <Edit className="mr-2 h-4 w-4" />
         Create

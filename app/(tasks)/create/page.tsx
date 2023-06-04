@@ -1,7 +1,4 @@
 import { Metadata } from "next"
-import Image from "next/image"
-import { db } from "@/db"
-import { Form } from "react-hook-form"
 
 import { CreateTaskForm } from "./form"
 

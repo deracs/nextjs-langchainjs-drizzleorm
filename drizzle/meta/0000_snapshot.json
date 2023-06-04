@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "pg",
-  "id": "27426cb1-fe49-47e7-ba94-13116d7f6d13",
+  "id": "68819590-eacc-465a-90d9-9ae47f03988f",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "tasks": {
@@ -22,15 +22,24 @@
         },
         "status": {
           "name": "status",
-          "type": "text",
+          "type": "status",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "default": "'todo'"
         },
         "priority": {
           "name": "priority",
-          "type": "text",
+          "type": "priority",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "default": "'low'"
+        },
+        "favourite": {
+          "name": "favourite",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
         },
         "created_at": {
           "name": "created_at",
@@ -75,9 +84,10 @@
         },
         "role": {
           "name": "role",
-          "type": "text",
+          "type": "role",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "default": "'user'"
         },
         "created_at": {
           "name": "created_at",
@@ -92,7 +102,33 @@
       "compositePrimaryKeys": {}
     }
   },
-  "enums": {},
+  "enums": {
+    "priority": {
+      "name": "priority",
+      "values": {
+        "low": "low",
+        "medium": "medium",
+        "high": "high"
+      }
+    },
+    "role": {
+      "name": "role",
+      "values": {
+        "admin": "admin",
+        "user": "user"
+      }
+    },
+    "status": {
+      "name": "status",
+      "values": {
+        "in_progress": "in_progress",
+        "done": "done",
+        "canceled": "canceled",
+        "todo": "todo",
+        "backlog": "backlog"
+      }
+    }
+  },
   "schemas": {},
   "_meta": {
     "schemas": {},

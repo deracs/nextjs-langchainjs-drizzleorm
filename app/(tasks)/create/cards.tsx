@@ -1,7 +1,3 @@
-import { CreditCard } from "lucide-react"
-
-import { statuses } from "@/config/data"
-import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,

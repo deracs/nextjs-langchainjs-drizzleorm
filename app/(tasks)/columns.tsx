@@ -3,8 +3,7 @@
 import { Task } from "@/db/schema"
 import { ColumnDef } from "@tanstack/react-table"
 
-import { labels, priorities, statuses } from "@/config/data"
-import { Badge } from "@/components/ui/badge"
+import { priorities, statuses } from "@/config/data"
 import { Checkbox } from "@/components/ui/checkbox"
 
 import { DataTableColumnHeader } from "../../components/ui/data-table/data-table-column-header"
@@ -46,11 +45,8 @@ export const columns: ColumnDef<Task>[] = [
       <DataTableColumnHeader column={column} title="Title" />
     ),
     cell: ({ row }) => {
-      // const label = labels.find((label) => label.value === row.original.label)
-
       return (
         <div className="flex space-x-2">
-          {/* {label && <Badge variant="outline">{label.label}</Badge>} */}
           <span className="max-w-[500px] truncate font-medium">
             {row.getValue("title")}
           </span>

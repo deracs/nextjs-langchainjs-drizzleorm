@@ -1,24 +1,15 @@
-import { useState } from "react"
-import { notFound, useRouter } from "next/navigation"
-import { db } from "@/db"
-import { Task, tasks } from "@/db/schema"
-import { eq } from "drizzle-orm"
+import { notFound } from "next/navigation"
+import { findFirstTask } from "@/db/queries"
 
 import DeleteButton from "../_components/DeleteButton"
 import { UpdateTaskForm } from "./form"
-
-async function getTaskForUser(taskId: Task["id"]) {
-  return await db.query.tasks.findFirst({
-    where: eq(tasks.id, taskId),
-  })
-}
 
 interface TaskEditPageProps {
   params: { taskId: number }
 }
 
 export default async function TaskEditPage({ params }: TaskEditPageProps) {
-  const task = await getTaskForUser(params.taskId)
+  const task = await findFirstTask(params.taskId)
 
   if (!task) {
     notFound()

@@ -1,4 +1,5 @@
 import { db } from "@/db"
+import { createTask } from "@/db/mutations"
 import { insertTaskSchema, tasks } from "@/db/schema"
 import * as z from "zod"
 
@@ -15,12 +16,9 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const json = await req.json()
-    const post = await db
-      .insert(tasks)
-      .values(insertTaskSchema.parse(json))
-      .returning()
+    const task = await createTask(insertTaskSchema.parse(json))
 
-    return new Response(JSON.stringify(post))
+    return new Response(JSON.stringify(task))
   } catch (error: any) {
     if (error instanceof z.ZodError) {
       return new Response(JSON.stringify(error.issues), { status: 422 })

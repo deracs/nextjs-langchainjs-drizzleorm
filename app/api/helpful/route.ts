@@ -14,16 +14,16 @@ export async function POST(req: Request) {
     const tools = [new CreateTaskTool()]
     const model = new ChatOpenAI({
       temperature: 0,
-      modelName: "gpt-3.5-turbo",
+      modelName: "gpt-4", // "gpt-3.5-turbo",
       verbose: true,
     })
     const executor = await initializeAgentExecutorWithOptions(tools, model, {
       agentType: "structured-chat-zero-shot-react-description",
       verbose: true,
     })
-    console.log("Question: ", input)
+
     const response = await executor.call({ input })
-    console.log("Response: ", response)
+
     return new Response(JSON.stringify(response), {
       headers: { "Content-Type": "application/json" },
     })
@@ -35,4 +35,4 @@ export async function POST(req: Request) {
   }
 }
 
-export const runtime = "edge"
+// export const runtime = "edge"

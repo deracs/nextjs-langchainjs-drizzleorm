@@ -10,10 +10,6 @@ export const siteConfig = {
       href: "/",
     },
     {
-      title: "Tasks",
-      href: "/tasks",
-    },
-    {
       title: "Ask",
       href: "/ask",
     },
@@ -23,8 +19,8 @@ export const siteConfig = {
     github: "https://github.com/deracs",
     docs: "https://deracs.com",
     tasks: {
-      create: "/tasks/create",
-      view: "/tasks",
+      create: "/create",
+      view: "/",
     },
     ask: {
       // create: "/ask/create",

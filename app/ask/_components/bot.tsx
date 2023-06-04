@@ -1,12 +1,11 @@
 "use client"
 
-import { FormEvent, useCallback, useEffect, useState } from "react"
-import Link from "next/link"
+import { FormEvent, useCallback, useState } from "react"
 import { useRouter } from "next/navigation"
 import { Task } from "@/db/schema"
-import { ArrowRightCircle, CircleEllipsis, HelpCircle } from "lucide-react"
+import { ArrowRightCircle } from "lucide-react"
 
-import { priorities, statuses } from "@/config/data"
+import { priorities } from "@/config/data"
 import { siteConfig } from "@/config/site"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -70,9 +69,9 @@ const TestCard = ({ item }: { item: Task }) => {
     </CardContent>
   )
 }
+
 export function BotForm() {
   const [input, setInput] = useState("")
-  const router = useRouter()
   const [output, setOutput] = useState<Task[]>([])
   const [inflight, setInflight] = useState(false)
 
