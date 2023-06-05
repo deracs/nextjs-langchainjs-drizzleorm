@@ -1,4 +1,5 @@
-import { BotForm } from "./_components/bot"
+import { BotForm } from "@/components/bot"
+
 import "./style.css"
 
 export default function Home() {
@@ -12,6 +13,7 @@ export default function Home() {
           Lets chat
         </h1>
       </div>
+
       <BotForm />
     </section>
   )

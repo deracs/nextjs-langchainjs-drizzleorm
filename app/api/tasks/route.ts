@@ -1,11 +1,11 @@
-import { db } from "@/db"
 import { createTask } from "@/db/mutations"
-import { insertTaskSchema, tasks } from "@/db/schema"
+import { allTasks, findTask } from "@/db/queries"
+import { insertTaskSchema } from "@/db/schema"
 import * as z from "zod"
 
 export async function GET() {
   try {
-    const tasksData = await db.query.tasks.findMany()
+    const tasksData = await allTasks()
 
     return new Response(JSON.stringify(tasksData))
   } catch (error) {

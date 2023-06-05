@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation"
 import { NewTask, insertTaskSchema } from "@/db/schema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import * as z from "zod"
 
 import { priorities, statuses } from "@/config/data"
 import { Button } from "@/components/ui/button"

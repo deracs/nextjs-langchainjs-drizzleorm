@@ -1,5 +1,7 @@
 import { db } from "@/db"
-import { insertTaskSchema, tasks } from "@/db/schema"
+import { createTask } from "@/db/mutations"
+import { findFirstTask, findTask } from "@/db/queries"
+import { Task, insertTaskSchema, selectTaskSchema, tasks } from "@/db/schema"
 import { StructuredTool } from "langchain/tools"
 import { z } from "zod"
 
@@ -9,7 +11,13 @@ const createTaskType = insertTaskSchema.pick({
   priority: true,
 })
 
+const findTaskType = selectTaskSchema.pick({
+  priority: true,
+  status: true,
+})
+
 type CreateTaskType = z.infer<typeof createTaskType>
+type FindTaskType = z.infer<typeof findTaskType>
 
 export class CreateTaskTool extends StructuredTool {
   name = "create-task"
@@ -25,7 +33,7 @@ export class CreateTaskTool extends StructuredTool {
       return "Invalid input"
     }
 
-    const task = await db.insert(tasks).values(data).returning()
+    const task: Task[] = await createTask(data)
 
     if (!task) {
       throw new Error("Task not created")
@@ -36,4 +44,23 @@ export class CreateTaskTool extends StructuredTool {
   returnDirect: boolean = true
   description =
     "Creates a task in the project management tool. This is the last step in the workflow. All fields are required."
+}
+
+export class FindTaskTool extends StructuredTool {
+  name = "find-task"
+  schema = findTaskType
+
+  /** @ignore */
+  async _call(input: FindTaskType) {
+    const task = await findTask(input)
+
+    if (!task) {
+      return "Task not found"
+    }
+
+    return JSON.stringify(task)
+  }
+  returnDirect: boolean = true
+  description =
+    "Find a task in the project management tool. This is the last step in the workflow. All fields are required."
 }

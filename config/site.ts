@@ -9,10 +9,10 @@ export const siteConfig = {
       title: "Home",
       href: "/",
     },
-    {
-      title: "Ask",
-      href: "/ask",
-    },
+    // {
+    //   title: "Ask",
+    //   href: "/ask",
+    // },
   ],
   links: {
     twitter: "https://twitter.com/deracs",

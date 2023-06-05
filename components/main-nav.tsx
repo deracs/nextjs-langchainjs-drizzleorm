@@ -6,6 +6,9 @@ import { siteConfig } from "@/config/site"
 import { cn } from "@/lib/utils"
 import { Icons } from "@/components/icons"
 
+import { BotForm } from "./bot"
+import { TaskDialog } from "./ui/task-dialog"
+
 interface MainNavProps {
   items?: NavItem[]
 }
@@ -34,6 +37,9 @@ export function MainNav({ items }: MainNavProps) {
                 </Link>
               )
           )}
+          <TaskDialog>
+            <BotForm />
+          </TaskDialog>
         </nav>
       ) : null}
     </div>

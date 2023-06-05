@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm"
+import { and, eq } from "drizzle-orm"
 import { z } from "zod"
 
 import { db } from "."
@@ -14,5 +14,18 @@ export async function findFirstTask(taskId: Task["id"]) {
   "use server"
   return await db.query.tasks.findFirst({
     where: eq(tasks.id, taskId),
+  })
+}
+
+export async function findTask(
+  task: Partial<z.infer<typeof selectTaskSchema>>
+) {
+  const filters = Object.entries(task).map(([key, value]) => {
+    return eq(tasks[key as keyof Task], value)
+  })
+
+  console.log(task)
+  return await db.query.tasks.findMany({
+    where: and(...filters),
   })
 }
