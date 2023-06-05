@@ -1,19 +1,19 @@
-"use client"
+// "use client"
 
-import { useRouter } from "next/navigation"
 import { Table } from "@tanstack/react-table"
-import { Edit, X } from "lucide-react"
+import { X } from "lucide-react"
 
 import { priorities, statuses } from "@/config/data"
-import { siteConfig } from "@/config/site"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
 import { DataTableFacetedFilter } from "./data-table-faceted-filter"
+import { DataTableToolbarActions } from "./data-table-toolbar-actions"
 import { DataTableViewOptions } from "./data-table-view-options"
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>
+  actions: any
 }
 
 export function DataTableToolbar<TData>({
@@ -22,7 +22,7 @@ export function DataTableToolbar<TData>({
   const isFiltered =
     table.getPreFilteredRowModel().rows.length >
     table.getFilteredRowModel().rows.length
-  const router = useRouter()
+
   return (
     <div className="flex items-center justify-between">
       <div className="flex flex-1 items-center space-x-2">
@@ -59,16 +59,10 @@ export function DataTableToolbar<TData>({
           </Button>
         )}
       </div>
-      <Button
-        variant="outline"
-        size="sm"
-        className="ml-auto hidden h-8 lg:flex"
-        onClick={() => router.push(siteConfig.links.tasks.create)}
-      >
-        <Edit className="mr-2 h-4 w-4" />
-        Create
-      </Button>
-      <DataTableViewOptions table={table} />
+      <div className="flex flex-1 items-center space-x-2">
+        <DataTableToolbarActions table={table} />
+        <DataTableViewOptions table={table} />
+      </div>
     </div>
   )
 }

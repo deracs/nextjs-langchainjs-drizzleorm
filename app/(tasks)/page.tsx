@@ -1,6 +1,8 @@
 import { Metadata } from "next"
 import Image from "next/image"
 import { allTasks } from "@/db/queries"
+import { Task } from "@/db/schema"
+import { Row } from "@tanstack/react-table"
 
 import { DataTable } from "@/components/ui/data-table/data-table"
 import { UserNav } from "@/components/ui/data-table/user-nav"
@@ -10,6 +12,32 @@ import { columns } from "./columns"
 export const metadata: Metadata = {
   title: "Tasks",
   description: "A task and issue tracker build using Tanstack Table.",
+}
+async function deleteTasks(rows: Row<Task>[], toast: any) {
+  "use server"
+  const ids = rows.map((row) => row.original.id)
+  if (ids.length === 0) {
+    toast({
+      description: "No tasks selected",
+    })
+    return
+  }
+
+  const response = await fetch("/api/tasks", {
+    method: "DELETE",
+    body: JSON.stringify({ ids }),
+  })
+
+  if (!response.ok) {
+    toast({
+      title: "An error occurred",
+      description: "Tasks could not be deleted: " + response.statusText,
+    })
+    return
+  }
+  toast({
+    description: "Tasks deleted",
+  })
 }
 
 export default async function TaskPage() {
@@ -44,7 +72,13 @@ export default async function TaskPage() {
             <UserNav />
           </div>
         </div>
-        <DataTable data={tasks} columns={columns} />
+        <DataTable
+          data={tasks}
+          columns={columns}
+          actions={{
+            delete: deleteTasks,
+          }}
+        />
       </div>
     </>
   )

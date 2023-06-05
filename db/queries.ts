@@ -24,7 +24,6 @@ export async function findTask(
     return eq(tasks[key as keyof Task], value)
   })
 
-  console.log(task)
   return await db.query.tasks.findMany({
     where: and(...filters),
   })
