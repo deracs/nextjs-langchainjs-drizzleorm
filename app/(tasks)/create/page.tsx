@@ -1,6 +1,8 @@
 import { Metadata } from "next"
 
-import { CreateTaskForm } from "./form"
+import { createTask } from "@/app/_requests/task"
+
+import { TaskForm } from "../_components/form"
 
 export const metadata: Metadata = {
   title: "Tasks - create",
@@ -15,7 +17,7 @@ export default async function TaskPage() {
           Create task
         </h1>
       </div>
-      <CreateTaskForm />
+      <TaskForm taskAction={createTask} type="create" />
     </section>
   )
 }

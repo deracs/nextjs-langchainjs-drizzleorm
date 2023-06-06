@@ -1,7 +1,6 @@
-import { db } from "@/db"
-import { deleteTask, updateTask } from "@/db/mutations"
-import { insertTaskSchema, tasks } from "@/db/schema"
-import { eq } from "drizzle-orm"
+import { NextResponse } from "next/server"
+import { insertTaskSchema } from "@/drizzle/schema"
+import { deleteTask, updateTask } from "@/drizzle/tasks"
 import * as z from "zod"
 
 const routeContextSchema = z.object({
@@ -18,15 +17,15 @@ export async function DELETE(req: Request, context: routeContextType) {
     const { params } = routeContextSchema.parse(context)
     const taskId = parseInt(params.taskId)
     // Delete the post.
-    await deleteTask(taskId)
+    const task = await deleteTask(taskId)
 
-    return new Response(null, { status: 204 })
+    return NextResponse.json(task, { status: 201 })
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return new Response(JSON.stringify(error.issues), { status: 422 })
+      return NextResponse.json(error.issues, { status: 422 })
     }
 
-    return new Response(null, { status: 500 })
+    return NextResponse.json(null, { status: 500 })
   }
 }
 
@@ -47,12 +46,12 @@ export async function PATCH(req: Request, context: routeContextType) {
 
     const data = await updateTask(taskId, body)
 
-    return new Response(JSON.stringify(data))
+    return NextResponse.json(data)
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return new Response(JSON.stringify(error.issues), { status: 422 })
+      return NextResponse.json(error.issues, { status: 422 })
     }
 
-    return new Response(null, { status: 500 })
+    return NextResponse.json(null, { status: 500 })
   }
 }

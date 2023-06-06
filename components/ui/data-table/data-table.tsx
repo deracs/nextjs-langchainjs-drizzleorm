@@ -1,11 +1,12 @@
 "use client"
 
 import * as React from "react"
+import { Task } from "@/drizzle/schema"
 import {
   ColumnDef,
   ColumnFiltersState,
-  Row,
   SortingState,
+  Table as TanTable,
   VisibilityState,
   flexRender,
   getCoreRowModel,
@@ -17,6 +18,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 
+import { TableActions } from "@/types/table"
 import {
   Table,
   TableBody,
@@ -32,9 +34,7 @@ import { DataTableToolbar } from "./data-table-toolbar"
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
-  actions: {
-    delete: (rows: Row<TData>[], toast: any) => void
-  }
+  actions: TableActions<TData>
 }
 
 export function DataTable<TData, TValue>({

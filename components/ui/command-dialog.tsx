@@ -3,7 +3,7 @@
 import * as React from "react"
 import { useCallback, useState } from "react"
 import { useRouter } from "next/navigation"
-import { Task } from "@/db/schema"
+import { Task } from "@/drizzle/schema"
 import {
   Bot,
   Calculator,

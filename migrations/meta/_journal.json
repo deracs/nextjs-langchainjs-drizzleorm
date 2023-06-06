@@ -1,0 +1,13 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1686025745054,
+      "tag": "0000_sticky_mordo",
+      "breakpoints": false
+    }
+  ]
+}

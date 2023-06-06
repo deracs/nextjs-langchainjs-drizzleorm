@@ -1,4 +1,4 @@
-import { db } from "@/db"
+import { db } from "@/drizzle"
 import { SqlToolkit, createSqlAgent } from "@/langchain/sql/sql.agent"
 import { OpenAI } from "langchain/llms/openai"
 

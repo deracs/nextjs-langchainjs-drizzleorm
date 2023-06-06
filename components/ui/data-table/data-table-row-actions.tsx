@@ -1,59 +1,36 @@
 "use client"
 
-import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { selectTaskSchema } from "@/db/schema"
+import { selectTaskSchema } from "@/drizzle/schema"
 import { Row } from "@tanstack/react-table"
-import { Copy, MoreHorizontal, Pen, Star, Tags, Trash } from "lucide-react"
+import { Copy, MoreHorizontal, Pen, Star, Trash } from "lucide-react"
 
+import { TableActions } from "@/types/table"
 import { siteConfig } from "@/config/site"
-// import { labels } from "@/config/data"
+import { cn } from "@/lib/utils"
+import { useDeleteTask, useFavouriteTask, useSave } from "@/hooks/task"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-import { toast } from "../use-toast"
-
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>
+  actions: TableActions<TData>
 }
 
 export function DataTableRowActions<TData>({
   row,
+  actions,
 }: DataTableRowActionsProps<TData>) {
-  const [isSaving, setIsSaving] = useState<boolean>(false)
   const task = selectTaskSchema.parse(row.original)
   const router = useRouter()
-  async function onDelete() {
-    setIsSaving(true)
-
-    const response = await fetch(`/api/tasks/${task.id}`, {
-      method: "DELETE",
-    })
-
-    setIsSaving(false)
-
-    if (!response?.ok) {
-      return toast({
-        title: "Something went wrong.",
-        description: "Your post was not saved. Please try again.",
-        variant: "destructive",
-      })
-    }
-
-    router.refresh()
-
-    return toast({
-      title: "Success!",
-      description: "Your task has been deleted.",
-    })
-  }
+  const { onDelete, isDeleting } = useDeleteTask(task.id, actions.delete)
+  const { onSave, isSaving } = useFavouriteTask(actions.favourite)
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -74,19 +51,23 @@ export function DataTableRowActions<TData>({
           <Pen className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
           Edit
         </DropdownMenuItem>
-        <DropdownMenuItem>
+        {/* <DropdownMenuItem>
           <Copy className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
           Make a copy
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          <Star className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
-          Favorite
+        </DropdownMenuItem> */}
+        <DropdownMenuItem onSelect={() => onSave(task.id)}>
+          <Star
+            className="mr-2 h-3.5 w-3.5 text-muted-foreground/70"
+            color={task.favourite ? "gold" : "grey"}
+            fill={task.favourite ? "gold" : "none"}
+          />
+          {task.favourite ? "Favourited" : "Favourite"}
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onSelect={() => onDelete()}>
           <Trash className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
-          {isSaving ? "Deleting..." : "Delete"}
-          <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
+          {isDeleting ? "Deleting..." : "Delete"}
+          {/* <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut> */}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

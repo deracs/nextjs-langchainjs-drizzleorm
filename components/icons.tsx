@@ -1,4 +1,5 @@
 import {
+  AlertTriangle,
   ArrowDownToLine,
   ArrowRightToLine,
   ArrowUpCircle,
@@ -10,8 +11,10 @@ import {
   Loader2,
   LucideProps,
   Moon,
+  Plus,
   SunMedium,
   Twitter,
+  User,
   XCircle,
   type Icon as LucideIcon,
 } from "lucide-react"
@@ -19,6 +22,9 @@ import {
 export type Icon = LucideIcon
 
 export const Icons = {
+  add: Plus,
+  warning: AlertTriangle,
+  user: User,
   chevronLeft: ChevronLeft,
   spinner: Loader2,
   sun: SunMedium,

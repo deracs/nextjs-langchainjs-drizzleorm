@@ -1,7 +1,11 @@
-import { db } from "@/db"
-import { createTask } from "@/db/mutations"
-import { findFirstTask, findTask } from "@/db/queries"
-import { Task, insertTaskSchema, selectTaskSchema, tasks } from "@/db/schema"
+import { findTask } from "@/drizzle/queries/tasks"
+import {
+  Task,
+  insertTaskSchema,
+  selectTaskSchema,
+  tasks,
+} from "@/drizzle/schema"
+import { createTask } from "@/drizzle/tasks"
 import { StructuredTool } from "langchain/tools"
 import { z } from "zod"
 
@@ -43,12 +47,12 @@ export class CreateTaskTool extends StructuredTool {
   }
   returnDirect: boolean = true
   description =
-    "Creates a task in the project management tool. This is the last step in the workflow. All fields are required."
+    "Creates a task. If it is an ENUM. Only select one string value from that list. This is the last step in the workflow. Treat this as a postgres database."
 }
 
 export class FindTaskTool extends StructuredTool {
   name = "find-task"
-  schema = findTaskType
+  schema = findTaskType.partial()
 
   /** @ignore */
   async _call(input: FindTaskType) {
@@ -62,5 +66,5 @@ export class FindTaskTool extends StructuredTool {
   }
   returnDirect: boolean = true
   description =
-    "Find a task in the project management tool. This is the last step in the workflow. All fields are required."
+    "Find a task tool. This is the last step in the workflow. If it is an ENUM. Only select one string value from that list."
 }

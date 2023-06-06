@@ -1,3 +1,6 @@
+"use client"
+
+import { useEffect, useState } from "react"
 import { BotIcon } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -11,8 +14,19 @@ import {
 } from "@/components/ui/dialog"
 
 export function TaskDialog({ children }: { children: React.ReactNode }) {
+  const [open, setOpen] = useState(false)
+  useEffect(() => {
+    const down = (e: KeyboardEvent) => {
+      if (e.key === "u" && e.metaKey) {
+        setOpen((open) => !open)
+      }
+    }
+
+    document.addEventListener("keydown", down)
+    return () => document.removeEventListener("keydown", down)
+  }, [])
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="ghost">
           Ask

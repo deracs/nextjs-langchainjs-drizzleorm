@@ -2,7 +2,7 @@
 
 import { FormEvent, useCallback, useState } from "react"
 import { useRouter } from "next/navigation"
-import { Task } from "@/db/schema"
+import { Task } from "@/drizzle/schema"
 import { ArrowRightCircle } from "lucide-react"
 
 import { priorities } from "@/config/data"
@@ -10,15 +10,19 @@ import { siteConfig } from "@/config/site"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { CardContent } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 import { toast } from "@/components/ui/use-toast"
+import { askBot } from "@/app/_requests/ai"
 
 import { AnimatedInput } from "./ui/AnimatedInput"
 
 const TestCard = ({ item }: { item: Task }) => {
   const router = useRouter()
   const priorityData = priorities.find((label) => label.value === item.priority)
+
+  if (!priorityData) {
+    return null
+  }
 
   // bg colors for priority
   const priorityBg = {
@@ -74,8 +78,6 @@ export function BotForm() {
   const onSubmit = useCallback(
     async (e: FormEvent) => {
       e.preventDefault()
-
-      // Prevent multiple requests at once
       if (inflight) return
       if (!input) {
         toast({
@@ -87,11 +89,7 @@ export function BotForm() {
       setInflight(true)
 
       try {
-        const res = await fetch("/api/helpful", {
-          method: "POST",
-          body: JSON.stringify({ input }),
-        })
-        const data = await res.json()
+        const data = await askBot({ input })
 
         if (data) {
           setOutput([...data])

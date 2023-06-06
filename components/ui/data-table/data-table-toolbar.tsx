@@ -1,8 +1,7 @@
-// "use client"
-
 import { Table } from "@tanstack/react-table"
 import { X } from "lucide-react"
 
+import { TableActions } from "@/types/table"
 import { priorities, statuses } from "@/config/data"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -13,11 +12,12 @@ import { DataTableViewOptions } from "./data-table-view-options"
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>
-  actions: any
+  actions: TableActions<TData>
 }
 
 export function DataTableToolbar<TData>({
   table,
+  actions,
 }: DataTableToolbarProps<TData>) {
   const isFiltered =
     table.getPreFilteredRowModel().rows.length >
@@ -60,7 +60,7 @@ export function DataTableToolbar<TData>({
         )}
       </div>
       <div className="flex flex-1 items-center space-x-2">
-        <DataTableToolbarActions table={table} />
+        <DataTableToolbarActions table={table} actions={actions} />
         <DataTableViewOptions table={table} />
       </div>
     </div>

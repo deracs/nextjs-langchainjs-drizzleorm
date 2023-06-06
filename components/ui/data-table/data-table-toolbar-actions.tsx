@@ -1,9 +1,12 @@
+"use client"
+
 import { useRouter } from "next/navigation"
-import { Task } from "@/db/schema"
-import { Row, Table } from "@tanstack/react-table"
+import { Table } from "@tanstack/react-table"
 import { Delete, Edit } from "lucide-react"
 
+import { TableActions } from "@/types/table"
 import { siteConfig } from "@/config/site"
+import { useDeleteTasks } from "@/hooks/task"
 import { Button } from "@/components/ui/button"
 
 import {
@@ -14,45 +17,20 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../dropdown-menu"
-import { useToast } from "../use-toast"
 
 interface DataTableToolbarActions<TData> {
   table: Table<TData>
+  actions: TableActions<TData>
 }
 
 export function DataTableToolbarActions<TData>({
   table,
+  actions,
 }: DataTableToolbarActions<TData>) {
   const router = useRouter()
-  const { toast } = useToast()
-
   const selectedRows = table.getSelectedRowModel().rows
-  const deleteTask = async (rows: Row<Task>[]) => {
-    const ids = rows.map((row) => row.original.id)
-    if (ids.length === 0) {
-      toast({
-        description: "No tasks selected",
-      })
-      return
-    }
-
-    const response = await fetch("/api/tasks", {
-      method: "DELETE",
-      body: JSON.stringify({ ids }),
-    })
-
-    if (!response.ok) {
-      toast({
-        title: "An error occurred",
-        description: "Tasks could not be deleted: " + response.statusText,
-      })
-      return
-    }
-    toast({
-      description: "Tasks deleted",
-    })
-  }
-
+  const ids = selectedRows.map((row) => row.original.id) // TODO fix this
+  const { onDelete } = useDeleteTasks({ ids }, actions.deleteMany)
   return (
     <div className="ml-auto hidden h-8 lg:flex">
       <DropdownMenu>
@@ -63,7 +41,7 @@ export function DataTableToolbarActions<TData>({
             className="ml-auto hidden h-8 lg:flex"
           >
             <Edit className="mr-2 h-4 w-4" />
-            Edit
+            Actions
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
@@ -75,9 +53,13 @@ export function DataTableToolbarActions<TData>({
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuItem onSelect={() => deleteTask(selectedRows)}>
-            <Delete className="mr-2 h-4 w-4" /> Delete
-          </DropdownMenuItem>
+          {selectedRows.length > 0 ? (
+            <DropdownMenuItem onSelect={onDelete}>
+              <Delete className="mr-2 h-4 w-4" /> Delete ({selectedRows.length})
+            </DropdownMenuItem>
+          ) : (
+            <DropdownMenuItem disabled>Select rows</DropdownMenuItem>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

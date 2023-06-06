@@ -1,0 +1,11 @@
+services:
+  db:
+    image: ankane/pgvector
+    ports:
+      - 5436:5432
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=drizzlepassword
+      - POSTGRES_USER=drizzleDB
+      - POSTGRES_DB=drizzle

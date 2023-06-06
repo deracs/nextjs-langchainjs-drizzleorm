@@ -1,8 +1,10 @@
 import { notFound } from "next/navigation"
-import { findFirstTask } from "@/db/queries"
+import { findFirstTask } from "@/drizzle/queries/tasks"
+
+import { deleteTask, updateTask } from "@/app/_requests/task"
 
 import DeleteButton from "../_components/DeleteButton"
-import { UpdateTaskForm } from "./form"
+import { TaskForm } from "../_components/form"
 
 interface TaskEditPageProps {
   params: { taskId: number }
@@ -21,9 +23,9 @@ export default async function TaskEditPage({ params }: TaskEditPageProps) {
         <h1 className="text-3xl font-extrabold leading-tight tracking-tighter md:text-4xl">
           Update task
         </h1>
-        <DeleteButton taskId={params.taskId} />
+        <DeleteButton taskId={params.taskId} deleteAction={deleteTask} />
       </div>
-      <UpdateTaskForm task={task} />
+      <TaskForm task={task} taskAction={updateTask} type="update" />
     </section>
   )
 }

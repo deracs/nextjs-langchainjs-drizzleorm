@@ -1,21 +1,16 @@
-import { createTask, deleteTasks } from "@/db/mutations"
-import { allTasks, findTask } from "@/db/queries"
-import { insertTaskSchema } from "@/db/schema"
+import { NextResponse } from "next/server"
+import { allTasks } from "@/drizzle/queries/tasks"
+import { insertTaskSchema } from "@/drizzle/schema"
+import { createTask } from "@/drizzle/tasks"
 import * as z from "zod"
-
-const deleteIdsSchema = z.object({
-  taskIds: z.array(z.number()),
-})
-
-type DeleteIDsType = z.infer<typeof deleteIdsSchema>
 
 export async function GET() {
   try {
     const tasksData = await allTasks()
 
-    return new Response(JSON.stringify(tasksData))
+    return NextResponse.json(tasksData)
   } catch (error) {
-    return new Response(null, { status: 500 })
+    return NextResponse.json(null, { status: 500 })
   }
 }
 
@@ -24,39 +19,11 @@ export async function POST(req: Request) {
     const json = await req.json()
     const task = await createTask(insertTaskSchema.parse(json))
 
-    return new Response(JSON.stringify(task))
+    return NextResponse.json(task)
   } catch (error: any) {
     if (error instanceof z.ZodError) {
-      return new Response(JSON.stringify(error.issues), { status: 422 })
+      return NextResponse.json(error.issues, { status: 422 })
     }
-    return new Response(JSON.stringify(error.message), { status: 500 })
-  }
-}
-
-export async function DELETE(req: Request) {
-  try {
-    const json = await req.json()
-
-    const { taskIds } = deleteIdsSchema.parse(json)
-
-    if (!taskIds) {
-      return new Response(
-        JSON.stringify({
-          error: "No taskIds provided",
-        }),
-        { status: 404 }
-      )
-    }
-
-    const tasks = await deleteTasks(taskIds)
-
-    console.log(tasks)
-
-    return new Response(null, { status: 204 })
-  } catch (error: any) {
-    if (error instanceof z.ZodError) {
-      return new Response(JSON.stringify(error.issues), { status: 422 })
-    }
-    return new Response(JSON.stringify(error.message), { status: 500 })
+    return NextResponse.json(error.message, { status: 500 })
   }
 }

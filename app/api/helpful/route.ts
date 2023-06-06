@@ -4,28 +4,13 @@ import { ChatOpenAI } from "langchain/chat_models/openai"
 import { CreateTaskTool, FindTaskTool } from "./_tools/create-task.tool"
 
 export async function POST(req: Request) {
-  // const test = [
-  //   {
-  //     id: 16,
-  //     title: "Finish project report",
-  //     status: "in_progress",
-  //     priority: "high",
-  //     favourite: false,
-  //     createdAt: "2023-06-04T23:52:56.000Z",
-  //     updatedAt: "2023-06-04T23:52:56.000Z",
-  //   },
-  // ]
-
-  // return new Response(JSON.stringify(test), {
-  //   headers: { "Content-Type": "application/json" },
-  // })
   try {
     const { input } = await req.json()
 
     const tools = [new CreateTaskTool(), new FindTaskTool()]
     const model = new ChatOpenAI({
       temperature: 0,
-      modelName: "gpt-3.5-turbo", // "gpt-3.5-turbo",
+      modelName: "gpt-4", // "gpt-3.5-turbo",
       verbose: true,
     })
     const executor = await initializeAgentExecutorWithOptions(tools, model, {
