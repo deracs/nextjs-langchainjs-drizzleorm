@@ -1,72 +1,58 @@
 import util from "util"
 import {
+  AnyColumn,
+  Assume,
+  ColumnBaseConfig,
+  ColumnBuilderConfig,
+  ColumnConfig,
+  ColumnHKTBase,
   sql,
-  type Assume,
-  type ColumnBaseConfig,
-  type ColumnBuilderBaseConfig,
-  type ColumnBuilderHKTBase,
-  type ColumnHKTBase,
-  type MakeColumnConfig,
 } from "drizzle-orm"
-import { AnyPgTable, PgColumn, PgColumnBuilder } from "drizzle-orm/pg-core"
+import {
+  AnyPgTable,
+  PgColumn,
+  PgColumnBuilder,
+  PgColumnBuilderHKT,
+  PgColumnHKT,
+} from "drizzle-orm/pg-core"
 
-interface PgVectorBuilderHKT extends ColumnBuilderHKTBase {
-  _type: PgVectorBuilder<Assume<this["config"], ColumnBuilderBaseConfig>>
-  _columnHKT: PgVectorHKT
-}
-
-interface PgVectorHKT extends ColumnHKTBase {
-  _type: PgVector<Assume<this["config"], ColumnBaseConfig>>
-}
-
-export type PgVectorBuilderInitial<TName extends string> = PgVectorBuilder<{
-  name: TName
-  data: unknown
-  driverParam: unknown
-  notNull: false
-  hasDefault: false
-  dimensions?: number
-}>
-
-interface PgVectorBuilderBaseConfig extends ColumnBuilderBaseConfig {
-  dimensions?: number
-  default: undefined // make 'default' required
-  primaryKey: boolean
-}
-
-interface PgVectorBaseConfig extends ColumnBaseConfig {
-  dimensions?: number
-  default: undefined // make 'default' required
-  primaryKey: boolean
-}
-
-export type PgVectorBuilderConfig = PgVectorBuilderBaseConfig &
-  ColumnBuilderBaseConfig
-export type PgVectorConfig = PgVectorBaseConfig & ColumnBaseConfig
-
-class PgVectorBuilder<
-  T extends ColumnBuilderBaseConfig
-> extends PgColumnBuilder<PgVectorBuilderHKT, T> {
-  constructor(name: string, protected config: PgVectorConfig) {
+// TODO: https://github.com/drizzle-team/drizzle-orm/blob/1f8ff173a08b562cc64e41970c55f0dba0ac56f6/drizzle-orm/src/column.ts#L97
+export class PgVectorBuilder<
+  TData extends string = string
+> extends PgColumnBuilder<
+  PgColumnBuilderHKT,
+  ColumnBuilderConfig<{
+    data: TData
+    driverParam: string
+  }>
+> {
+  constructor(name: string, dimensions: number | undefined) {
     super(name)
+    this.config.dimensions = dimensions
   }
 
   build<TTableName extends string>(
     table: AnyPgTable<{ name: TTableName }>
-  ): PgVector<MakeColumnConfig<T, TTableName>> {
-    return new PgVector<MakeColumnConfig<T, TTableName>>(table, this.config)
+  ): PgVector<TTableName, TData> {
+    return new PgVector(table, this.config)
   }
 }
 
-class PgVector<T extends ColumnBaseConfig> extends PgColumn<PgVectorHKT, T> {
+class PgVector<
+  TTableName extends string,
+  TData extends string
+> extends PgColumn<
+  PgColumnHKT,
+  ColumnConfig<{ tableName: TTableName; data: TData; driverParam: string }>
+> {
   dimensions: number | undefined
 
   constructor(
-    table: AnyPgTable<{ name: T["tableName"] }>,
-    config: PgVectorBuilder<T>["config"]
+    table: AnyPgTable<{ name: TTableName }>,
+    builder: PgVectorBuilder<TData>["config"]
   ) {
-    super(table, config)
-    this.dimensions = config.dimensions
+    super(table, builder)
+    this.dimensions = builder.dimensions
   }
 
   getSQLType(): string {
@@ -77,20 +63,20 @@ class PgVector<T extends ColumnBaseConfig> extends PgColumn<PgVectorHKT, T> {
     return util.format("vector(%d)", dimensions)
   }
 
-  override mapFromDriverValue(value: T["data"] | string): T["data"] {
+  override mapFromDriverValue(value: TData | string): TData {
     return fromSql(value)
   }
 
-  override mapToDriverValue(value: T["data"]): string {
+  override mapToDriverValue(value: TData): string {
     return toSql(value)
   }
 }
 
-export function vector<TName extends string>(
-  name: TName,
-  config: PgVectorConfig
-): PgVectorBuilderInitial<TName> {
-  return new PgVectorBuilder(name, config)
+export function vector<T extends string = string>(
+  name: string,
+  config: { dimensions: number | undefined }
+): PgVectorBuilder<T> {
+  return new PgVectorBuilder(name, config && config.dimensions)
 }
 
 export function l2Distance(column: any, value: any): any {

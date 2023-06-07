@@ -14,8 +14,8 @@
           "primaryKey": true,
           "notNull": true
         },
-        "hello": {
-          "name": "hello",
+        "embedding": {
+          "name": "embedding",
           "type": "vector(3)",
           "primaryKey": false,
           "notNull": false
