@@ -35,4 +35,4 @@ yarn-error.log*
 .env
 
 # drizzle
-data/*
+data/
