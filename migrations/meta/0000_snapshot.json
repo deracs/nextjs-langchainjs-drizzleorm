@@ -1,9 +1,30 @@
 {
   "version": "5",
   "dialect": "pg",
-  "id": "7d102354-5be8-4c1b-a71f-f5d61ce983aa",
+  "id": "d1613406-5ce0-47eb-b2bc-e547bc372565",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
+    "items": {
+      "name": "items",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "hello": {
+          "name": "hello",
+          "type": "vector(3)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {}
+    },
     "tasks": {
       "name": "tasks",
       "schema": "",

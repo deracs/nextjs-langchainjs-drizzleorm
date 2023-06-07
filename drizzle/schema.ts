@@ -9,6 +9,8 @@ import {
 } from "drizzle-orm/pg-core"
 import { createInsertSchema, createSelectSchema } from "drizzle-zod"
 
+import { vector } from "./pgvector"
+
 // ENUMS
 export const roleEnum = pgEnum("role", ["admin", "user"])
 export const priorityEnum = pgEnum("priority", ["low", "medium", "high"])
@@ -40,10 +42,20 @@ export const tasks = pgTable("tasks", {
 })
 
 // enable when added
-// export const items = pgTable("items", {
-//   id: serial("id").primaryKey(),
-//   embedding: vector("embedding", { dimensions: 3 }),
-// })
+export const items = pgTable("items", {
+  id: serial("id").primaryKey(),
+  embedding: vector("embedding", {
+    dimensions: 3,
+    default: undefined,
+    primaryKey: false,
+    tableName: "",
+    name: "embedding",
+    data: undefined,
+    driverParam: undefined,
+    notNull: false,
+    hasDefault: false,
+  }),
+})
 
 // TYPES
 export type Task = InferModel<typeof tasks>

@@ -16,6 +16,17 @@ EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 
+DO $$ BEGIN
+  IF NOT EXISTS (SELECT * FROM pg_extension WHERE extname = 'vector') THEN
+    CREATE EXTENSION vector;
+  END IF;
+END $$;
+
+CREATE TABLE IF NOT EXISTS "items" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"embedding" vector(3)
+);
+
 CREATE TABLE IF NOT EXISTS "tasks" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"title" text NOT NULL,
