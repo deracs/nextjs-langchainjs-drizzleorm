@@ -1,11 +1,11 @@
 {
   "version": "5",
   "dialect": "pg",
-  "id": "d1613406-5ce0-47eb-b2bc-e547bc372565",
+  "id": "19ce85c5-777a-4ef4-ba70-0f957531ebea",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
-    "items": {
-      "name": "items",
+    "product": {
+      "name": "product",
       "schema": "",
       "columns": {
         "id": {
@@ -14,9 +14,33 @@
           "primaryKey": true,
           "notNull": true
         },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "manufacturer": {
+          "name": "manufacturer",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "category": {
+          "name": "category",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
         "embedding": {
           "name": "embedding",
-          "type": "vector(3)",
+          "type": "vector(1536)",
           "primaryKey": false,
           "notNull": false
         }

@@ -22,9 +22,14 @@ DO $$ BEGIN
   END IF;
 END $$;
 
-CREATE TABLE IF NOT EXISTS "items" (
+
+CREATE TABLE IF NOT EXISTS "product" (
 	"id" serial PRIMARY KEY NOT NULL,
-	"embedding" vector(3)
+	"name" text NOT NULL,
+	"manufacturer" text NOT NULL,
+	"category" text NOT NULL,
+	"description" text NOT NULL,
+	"embedding" vector(1536)
 );
 
 CREATE TABLE IF NOT EXISTS "tasks" (
@@ -44,3 +49,28 @@ CREATE TABLE IF NOT EXISTS "users" (
 	"role" role DEFAULT 'user' NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL
 );
+
+
+-- functions
+CREATE OR REPLACE FUNCTION public.match_products(query_embedding vector, match_threshold double precision, match_count integer)
+ RETURNS TABLE(id bigint, manufacturer text, "name" text, category text, description text, similarity double precision)
+ LANGUAGE sql
+ STABLE
+AS $function$
+  select
+    product.id,
+    product.manufacturer,
+    product."name",
+    product.category,
+    product.description,
+    1 - (product.embedding <=> query_embedding) as similarity
+  from product
+  where 1 - (product.embedding <=> query_embedding) > match_threshold
+  order by similarity desc
+  limit match_count;
+$function$
+
+-- indexes
+create index on product using ivfflat (embedding vector_cosine_ops)
+with
+  (lists = 100);

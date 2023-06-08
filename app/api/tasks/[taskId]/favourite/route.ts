@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
+import { deleteTask, updateTask } from "@/drizzle/mutations/tasks"
 import { findFirstTask } from "@/drizzle/queries/tasks"
 import { insertTaskSchema } from "@/drizzle/schema"
-import { deleteTask, updateTask } from "@/drizzle/tasks"
 import * as z from "zod"
 
 const routeContextSchema = z.object({

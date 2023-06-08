@@ -1,6 +1,6 @@
 import "server-only"
+import { DeleteManyTasks, deleteManyTasks } from "@/drizzle/mutations/tasks"
 import { NewTask, insertTaskSchema } from "@/drizzle/schema"
-import { DeleteManyTasks, deleteManyTasks } from "@/drizzle/tasks"
 
 export async function deleteTask(taskId: number) {
   "use server"

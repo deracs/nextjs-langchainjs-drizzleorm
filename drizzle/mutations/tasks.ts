@@ -1,8 +1,8 @@
 import { eq, or } from "drizzle-orm"
 import { z } from "zod"
 
-import { db } from "."
-import { NewTask, Task, insertTaskSchema, tasks } from "./schema"
+import { db } from ".."
+import { NewTask, Task, insertTaskSchema, tasks } from "../schema"
 
 export const createTask = async (task: NewTask) => {
   return await db.insert(tasks).values(insertTaskSchema.parse(task)).returning()

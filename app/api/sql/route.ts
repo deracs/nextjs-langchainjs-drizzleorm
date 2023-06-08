@@ -1,5 +1,5 @@
 import { db } from "@/drizzle"
-import { SqlToolkit, createSqlAgent } from "@/langchain/sql/sql.agent"
+import { SqlToolkit, createSqlAgent } from "@/drizzle/langchain/sql/agent"
 import { OpenAI } from "langchain/llms/openai"
 
 export async function POST(req: Request) {

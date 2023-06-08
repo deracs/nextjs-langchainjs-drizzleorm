@@ -15,7 +15,7 @@ import {
   ListTablesSqlTool,
   QueryCheckerTool,
   QuerySqlTool,
-} from "./sql.tools"
+} from "./tools"
 
 export class SqlToolkit extends Toolkit {
   tools: Tool[]

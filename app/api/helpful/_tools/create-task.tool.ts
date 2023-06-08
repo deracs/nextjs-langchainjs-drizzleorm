@@ -1,11 +1,6 @@
+import { createTask } from "@/drizzle/mutations/tasks"
 import { findTask } from "@/drizzle/queries/tasks"
-import {
-  Task,
-  insertTaskSchema,
-  selectTaskSchema,
-  tasks,
-} from "@/drizzle/schema"
-import { createTask } from "@/drizzle/tasks"
+import { Task, insertTaskSchema, selectTaskSchema } from "@/drizzle/schema"
 import { StructuredTool } from "langchain/tools"
 import { z } from "zod"
 

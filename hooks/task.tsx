@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import { DeleteManyTasks } from "@/drizzle/mutations/tasks"
 import { NewTask } from "@/drizzle/schema"
-import { DeleteManyTasks } from "@/drizzle/tasks"
 
 import { siteConfig } from "@/config/site"
 import { useToast } from "@/components/ui/use-toast"

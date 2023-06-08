@@ -41,19 +41,15 @@ export const tasks = pgTable("tasks", {
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 })
 
-// enable when added
-export const items = pgTable("items", {
+// vector table
+export const products = pgTable("product", {
   id: serial("id").primaryKey(),
+  manufacturer: text("manufacturer").notNull(),
+  name: text("name").notNull(),
+  category: text("category").notNull(),
+  description: text("description").notNull(),
   embedding: vector("embedding", {
-    dimensions: 3,
-    default: undefined,
-    primaryKey: false,
-    tableName: "",
-    name: "embedding",
-    data: undefined,
-    driverParam: undefined,
-    notNull: false,
-    hasDefault: false,
+    dimensions: 1536,
   }),
 })
 

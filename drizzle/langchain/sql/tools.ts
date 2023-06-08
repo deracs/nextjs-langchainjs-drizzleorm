@@ -5,7 +5,7 @@ import { BaseLanguageModel } from "langchain/dist/base_language"
 import { OpenAI } from "langchain/llms/openai"
 import { Tool } from "langchain/tools"
 
-import { generateTableInfoFromTables, getTables } from "./sql.utils"
+import { generateTableInfoFromTables, getTables } from "./utils"
 
 interface SqlTool {
   db: PostgresJsDatabase

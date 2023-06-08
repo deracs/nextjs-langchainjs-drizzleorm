@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { deleteManyTasks, deleteTasks } from "@/drizzle/tasks"
+import { deleteManyTasks, deleteTasks } from "@/drizzle/mutations/tasks"
 import * as z from "zod"
 
 export async function POST(req: Request) {

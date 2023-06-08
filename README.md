@@ -12,6 +12,18 @@ Task app built using NextJS, Shadcn UI, DrizzleORM and Langchain JS
 
 `yarn dev` to start the development server.
 
+## Notes:
+
+You should enable pgvector extension. There is a docker image you can use to play around with it locally:
+
+```sql
+DO $$ BEGIN
+  IF NOT EXISTS (SELECT * FROM pg_extension WHERE extname = 'vector') THEN
+    CREATE EXTENSION vector;
+  END IF;
+END $$;
+```
+
 ## Goals
 
 - build a CRUD AI app with Langchain
