@@ -16,6 +16,7 @@
     "migrate": "tsx drizzle/migrate.ts",
     "migrate:vercel": "tsx drizzle/migrate-vercel.ts",
     "seed": "tsx drizzle/seed.ts",
+    "sample": "tsx drizzle/langchain/hybrid-search.ts",
     "typecheck": "tsc --noEmit",
     "format:write": "prettier --write \"**/*.{ts,tsx,mdx}\" --cache",
     "format:check": "prettier --check \"**/*.{ts,tsx,mdx}\" --cache"

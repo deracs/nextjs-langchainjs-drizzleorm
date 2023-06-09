@@ -16,9 +16,9 @@ export async function selectProducts(input: InputEmbedding) {
 }
 
 async function match_products(input: InputEmbedding) {
-  const embedding = await getEmbedding(input)
+  const query_embedding = await getEmbedding(input)
   return await find_matches("products", {
-    embedding,
+    query_embedding,
     match_threshold: 0.78,
     match_count: 10,
   })

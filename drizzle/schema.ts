@@ -42,7 +42,7 @@ export const tasks = pgTable("tasks", {
 })
 
 // vector table
-export const products = pgTable("product", {
+export const products = pgTable("products", {
   id: serial("id").primaryKey(),
   manufacturer: text("manufacturer").notNull(),
   name: text("name").notNull(),

@@ -1,6 +1,6 @@
-# Next.js x LangChain x DrizzleORM example
+# Next.js x LangChain x DrizzleORM example/starter
 
-Task app built using NextJS, Shadcn UI, DrizzleORM and Langchain JS
+App built using NextJS, Shadcn UI, DrizzleORM with PgVector and LangchainJS
 
 #BuildInPublic
 
@@ -24,24 +24,28 @@ DO $$ BEGIN
 END $$;
 ```
 
+Docker:
+
+`docker-compose build && docker-composer -d up`
+
 ## Goals
 
-- build a CRUD AI app with Langchain
+- Build a AI CRUD app with Langchain
+- Embedding/Hybrid Search/QA
 
 ## Features
 
 - Next.js 13 App Directory
-- Radix UI Primitives
-- Tailwind CSS
-- Icons from [Lucide](https://lucide.dev)
-- Dark mode with `next-themes`
-- Tailwind CSS class sorting, merging and linting.
 - LangChainJS
 - DrizzleORM
+- PgVector
+- Shadcn
+- Radix UI Primitives
+- Tailwind CSS
 
 ## TODO
 
-- Re-add Streaming
-- Tidy up code
-- Add tests
-- Better migration tool
+- [ ] Hybrid Search with Drizzle/PgVector/Langchain
+- [ ] Re-add Streaming
+- [ ] Add tests
+- [ ] Better migration tool
